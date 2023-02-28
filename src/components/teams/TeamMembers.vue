@@ -8,7 +8,7 @@
         :name="member.fullName"
         :role="member.role"
       ></user-item>
-      <router-link to="/teams/t2">Go to team 2</router-link>
+      <router-link to="/teams/t3">Go to team 3</router-link>
     </ul>
   </section>
 </template>
@@ -17,7 +17,7 @@
 import UserItem from '../users/UserItem.vue';
 
 export default {
-  inject:['teams','users'],
+  inject:['users','teams'],
   props:['teamId'],
   components: {
     UserItem
@@ -28,25 +28,26 @@ export default {
       members: [],
     };
   },
-  created(){
-    this.getTeamId(this.teamId)
-  },
   methods:{
-    getTeamId(teamId){
-      const seletedTeam=this.teams.find(team=>team.id===teamId);
-      const members=seletedTeam.members;
-      const selectedMembers=[];
-      for(let member of members){
-        const selectedUser=this.users.find(user=>user.id===member);
-        selectedMembers.push(selectedUser);
-      }
-      this.members=selectedMembers;
-      this.teamName=seletedTeam.name;
+    getChangedTeamId(teamId){
+     const seletedTeam=this.teams.find(team=>team.id===teamId);
+     const members=seletedTeam.members;
+     const selectedMembers=[];
+     for(let member of members){
+      const selectUser=this.users.find(user=>user.id===member);
+      selectedMembers.push(selectUser);
+     }
+     this.members=selectedMembers;
+     this.teamName=seletedTeam.name;
     }
   },
+  created(){
+    this.getChangedTeamId(this.teamId);
+    console.log(this.$route.query);
+  },
   watch:{
-    teamId(newId){
-      this.getTeamId(newId);
+    teamId(newTeam){
+      this.getChangedTeamId(newTeam);
     }
   }
 };
