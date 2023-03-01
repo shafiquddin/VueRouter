@@ -1,10 +1,10 @@
 <template>
   <the-navigation></the-navigation>
   <main>
-   <router-view name='default'></router-view>
+    <router-view></router-view>
   </main>
   <footer>
-    <router-view name='footer'></router-view>
+    <router-view name="footer"></router-view>
   </footer>
 </template>
 

@@ -8,7 +8,7 @@
         :name="member.fullName"
         :role="member.role"
       ></user-item>
-      <router-link to="/teams/t3">Go to team 3</router-link>
+      <router-link to="/teams/t3">Goto Team 3</router-link>
     </ul>
   </section>
 </template>
@@ -28,28 +28,35 @@ export default {
       members: [],
     };
   },
-  methods:{
-    getChangedTeamId(teamId){
-     const seletedTeam=this.teams.find(team=>team.id===teamId);
-     const members=seletedTeam.members;
-     const selectedMembers=[];
-     for(let member of members){
-      const selectUser=this.users.find(user=>user.id===member);
-      selectedMembers.push(selectUser);
-     }
-     this.members=selectedMembers;
-     this.teamName=seletedTeam.name;
-    }
-  },
   created(){
-    this.getChangedTeamId(this.teamId);
-    console.log(this.$route.query);
+    console.log(this.$route.query)
+    this.addNewRouter(this.teamId);
   },
-  watch:{
-    teamId(newTeam){
-      this.getChangedTeamId(newTeam);
+
+  methods:{
+    addNewRouter(teamId){
+      const selectedTeam=this.teams.find(team=>team.id===teamId);
+      const members=selectedTeam.members;
+      const selectedMembers=[];
+      for(let member of members){
+        const selectedUser = this.users.find(user=>user.id===member);
+        selectedMembers.push(selectedUser);
+      }
+      this.members=selectedMembers;
+      this.teamName=selectedTeam.name;
     }
-  }
+  },
+  beforeRouteUpdate(to,from,next){
+    console.log('team-members');
+    console.log(to,from);
+    this.addNewRouter(to.params.teamId);
+    next()
+  },
+  // watch:{
+  //   teamId(newId){
+  //     this.addNewRouter(newId)
+  //   }
+  // }
 };
 </script>
 
