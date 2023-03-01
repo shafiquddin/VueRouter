@@ -29,10 +29,9 @@ export default {
     };
   },
   created(){
-    console.log(this.$route.query)
+    // console.log(this.$route.query)
     this.addNewRouter(this.teamId);
   },
-
   methods:{
     addNewRouter(teamId){
       const selectedTeam=this.teams.find(team=>team.id===teamId);
@@ -47,10 +46,10 @@ export default {
     }
   },
   beforeRouteUpdate(to,from,next){
-    console.log('team-members');
+    console.log('Before Route Update');
     console.log(to,from);
     this.addNewRouter(to.params.teamId);
-    next()
+    next();
   },
   // watch:{
   //   teamId(newId){

@@ -1,41 +1,41 @@
 <template>
-  <button @click="SaveChanges">save changes</button>
+  <button @click="SavedChanges">Save Changes</button>
   <ul>
     <user-item v-for="user in users" :key="user.id" :name="user.fullName" :role="user.role"></user-item>
   </ul>
 </template>
 
 <script>
-import UserItem from './UserItem.vue';
+import UserItem from '../components/users/UserItem.vue';
 
 export default {
   components: {
     UserItem,
   },
+  inject: ['users'],
   data(){
-    return{
+    return {
       change:false,
     }
   },
   methods:{
-    SaveChanges(){
-      this.change=true;
+    SavedChanges(){
+      this.change =true;
     }
   },
-  inject: ['users'],
   beforeRouteEnter(to,from,next){
-    console.log('In component log');
+    console.log("In component Enter");
     console.log(to,from);
     next();
   },
   beforeRouteLeave(to,from,next){
-    console.log('Router leaves');
+    console.log("When Route Leave");
     console.log(to,from);
     if(this.change){
-      const propMsg=confirm('Are you sure want leave');
-      next(propMsg);
+      const msg=confirm('Are you sure want to Leave?')
+      next(msg);
     }else{
-    next();
+      next();
     }
   }
 };

@@ -1,10 +1,10 @@
 import { createRouter, createWebHistory } from "vue-router";
-import TeamList from "./components/teams/TeamsList.vue";
-import UsersList from "./components/users/UsersList.vue";
+import TeamList from "./pages/TeamsList.vue";
+import UsersList from "./pages/UsersList.vue";
 import TeamMembers from "./components/teams/TeamMembers.vue";
-import TeamFooter from "./components/teams/TeamsFooter.vue";
-import UsersFooter from "./components/users/UsersFooter.vue";
-import NotFound from "./components/nav/NotFound.vue";
+import TeamFooter from "./pages/TeamsFooter.vue";
+import UsersFooter from "./pages/UsersFooter.vue";
+import NotFound from "./pages/NotFound.vue";
 
 const router = createRouter({
   history: createWebHistory(),
@@ -13,6 +13,9 @@ const router = createRouter({
     {
       name: "teams",
       path: "/teams",
+      meta:{
+        needsAuth:true
+      },
       components: { default: TeamList, footer: TeamFooter },
       children: [
         {
@@ -28,15 +31,15 @@ const router = createRouter({
       path: "/users",
       components: { default: UsersList, footer: UsersFooter },
       beforeEnter(to,from,next){
-        console.log('user route');
+        console.log('In Route Declartion');
         console.log(to,from);
         next();
-      },
+      }
     },
     { path: "/:notFound(.*)", component: NotFound },
   ],
   linkActiveClass: "active",
-  scrollBehavior(to, from, savedPosition) {
+  scrollBehavior(_, _2, savedPosition) {
     // console.log(to, from, savedPosition);
     if (savedPosition) {
       return savedPosition;
@@ -46,18 +49,19 @@ const router = createRouter({
 });
 
 router.beforeEach(function (to, from, next) {
-  console.log('Global beforeEach')
+  console.log("Global navigation");
   console.log(to, from);
-  // if(to.name==='teams-members'){
+  // if(to.meta.needsAuth){
+  //   console.log('needs meta data');
   //   next();
   // }else{
-  //   next({name:'teams-members', params:{teamId:'t2'}});
+  //   next();
   // }
   next();
 });
 
 router.afterEach(function(to,from){
-  console.log('Global afterEach');
+  console.log('Global Navigation');
   console.log(to,from);
 })
 
